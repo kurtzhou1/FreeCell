@@ -1,11 +1,17 @@
 import React from 'react';
+import SideMent from './SideMenu/SideMenu';
+import GameTable from './GameTable/GameTable'
+import './index.scss';
 
-function App() {
+var styles = require('./index.scss')
+
+const Module = () => {
   return (
-    <div className="App">
-      123
+    <div className="freeCell_Module">
+      <GameTable />
+      <SideMent />
     </div>
   );
 }
 
-export default App;
+export default Module;
