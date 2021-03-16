@@ -1,9 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Module from './components/module';
-import {Provider} from 'react-redux';
+import App from './components/App'
+
+const UploadModule = () => {
+  return(
+    <>
+      <App />
+    </>
+  )
+}
 
 ReactDOM.render(
-    <Module />,
+    <UploadModule />,
   document.getElementById('root')
 );
