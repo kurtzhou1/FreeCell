@@ -68,7 +68,6 @@ const App = () => {
           if(JSON.parse(e.data).action.includes('insert')){
             // mySocket.close(); //關閉webSocket
             const tmpData = JSON.parse(e.data);
-            console.log('data.notification.parameters=>>',tmpData.notification.parameters['9'])
             setData(tmpData.notification);
           }
         }

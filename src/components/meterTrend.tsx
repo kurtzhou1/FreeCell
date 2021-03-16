@@ -11,15 +11,15 @@ const MeterTrend:React.FC<any> = (props) => {
       let nine = props.data.parameters['9'].value; //庫內溫度
       let ten = props.data.parameters['10'].value; //蒸發器溫度
       let tmpArr = {Warehouse_Temperature:nine,Evaporator_Temperature:ten};
-      if(dataArray.length <= 2){
+      if(dataArray.length <= 19){
         setDataArray([...dataArray,tmpArr ]);
       }else{
-        const shiftArray = dataArray.shift()
-        setDataArray([...shiftArray,tmpArr ]);
+        dataArray.shift();
+        dataArray.push(tmpArr);
+        setDataArray(dataArray);
       }
     }
   },[props.data])
-  console.log('dataArr=>>',dataArray)
   
   return(
       <LineChart
