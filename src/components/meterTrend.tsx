@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs'
+import {dataArray} from '../libs//common'
 
 const MeterTrend:React.FC<any> = (props) => {
   
   const dataKey = Object.keys(props.data);
-  const [dataArray, setDataArray] = useState<any[]>([]);
+  const [dataArray, setDataArray] = useState<dataArray[]>([]);
 
   useEffect(()=>{
     if(dataKey.length !== 0){
@@ -16,7 +17,7 @@ const MeterTrend:React.FC<any> = (props) => {
       let timestampMin = dayjs(timestamp).format('HH:mm:ss');
       let tmpArr = {title:`${timestampDate} ${timestampMin}`,Warehouse_Temperature:nine,Evaporator_Temperature:ten};
     
-  //2021-03-17T07:48:18.656
+      //2021-03-17T07:48:18.656
       if(dataArray.length <= 19){
         setDataArray([...dataArray,tmpArr ]);
       }else{
@@ -40,7 +41,7 @@ const MeterTrend:React.FC<any> = (props) => {
           }}
       >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="title" angle={10}/>
+          <XAxis dataKey="title" angle={10} tick={{fontSize: 12, fontWeight:'bold'}}/>
           <YAxis />
           <Tooltip />
           <Legend />

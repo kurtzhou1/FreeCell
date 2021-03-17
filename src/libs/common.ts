@@ -3,3 +3,9 @@ export interface dataJWTut{
     refreshToken: string,
     tenant: string,
 }
+
+export interface dataArray{
+    title: string,
+    Warehouse_Temperature: number,
+    Evaporator_Temperature: number,
+}
