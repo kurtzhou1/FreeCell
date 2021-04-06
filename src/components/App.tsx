@@ -1,6 +1,6 @@
 // import React,{useState,useEffect,useRef,memo,useCallback,useMemo} from 'react';
 import React,{useState,useEffect} from 'react';
-import {getSession} from './storage/makeSession';
+
 import axios from 'axios';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
@@ -8,7 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import Login from './Login';
 import MeterTrend from './meterTrend';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
     const [ objKey,setObjKey] = useState<string[]>([]);   //設備基本資料Key
     const [ objValue,setObjValue ] = useState<any[]>([]); //設備基本資料Value
     const [ data,setData ] = useState([]);                //溫度計資料
+    const [ isLogin,setIsLogin ] = useState(false);
 
     const headers = {
       "Accept":"application/json",
@@ -57,9 +59,9 @@ const App = () => {
       )
     }
     
+    //獲取溫度計資料
     const getMeterData = () => {
       if(data.length === 0){
-        //獲取溫度計資料
         mySocket.onopen = function() {
           mySocket.send(JSON.stringify(info1));
           mySocket.send(JSON.stringify(info2));
@@ -97,31 +99,33 @@ const App = () => {
     });
 
     useEffect(()=>{
-      getSession();
       getData();
       getMeterData();
-    },[])
-
-    console.log()
+    },[isLogin])
   
     const classes = useStyles();
     return(
       <>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow  className={classes.root}>
-                  {objKey ? objKey.map(i=><TableCell className={classes.themeCell} key={i}>{i}</TableCell>):''}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                  {objValue ? objValue.map(i=><TableCell className={classes.contentCell} key={i}>{typeof(i) == "boolean" ? i ? 'Y':'N': i}</TableCell>):''}
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      <MeterTrend data={data}/>
+        {!isLogin ? 
+          <Login /> : 
+          <>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow  className={classes.root}>
+                      {objKey ? objKey.map(i=><TableCell className={classes.themeCell} key={i}>{i}</TableCell>):''}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                      {objValue ? objValue.map(i=><TableCell className={classes.contentCell} key={i}>{typeof(i) == "boolean" ? i ? 'Y':'N': i}</TableCell>):''}
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <MeterTrend data={data}/>
+          </>
+        }
       </>
     )
 };
