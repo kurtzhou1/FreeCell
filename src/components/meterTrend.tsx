@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import {dataArray} from '../libs//common'
 
 const MeterTrend:React.FC<any> = (props) => {
-  
+  console.log('props=>>',props)
   const dataKey = Object.keys(props.data);
   const [dataArray, setDataArray] = useState<dataArray[]>([]);
 
@@ -29,31 +29,31 @@ const MeterTrend:React.FC<any> = (props) => {
   },[props.data])
   
   return(
-      <LineChart
-          width={1400}
-          height={500}
-          data={dataArray}
-          margin={{
-          top: 30,
-          right: 20,
-          left: 20,
-          bottom: 50
-          }}
-      >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="title" angle={10} tick={{fontSize: 12, fontWeight:'bold'}}/>
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-          type="monotone"
-          dataKey="Warehouse_Temperature"
-          stroke="#FE6B8B"
-          activeDot={{ r: 8 }}
-          strokeWidth={2.5}
-          />
-          <Line type="monotone" dataKey="Evaporator_Temperature" stroke="#FF8E53" strokeWidth={2.5}/>
-      </LineChart>
+      <ResponsiveContainer width="100%" height="75%">
+          <LineChart
+              data={dataArray}
+              margin={{
+              top: 30,
+              right: 20,
+              left: 20,
+              bottom: 50
+              }}
+          >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="title" angle={10} tick={{fontSize: 12, fontWeight:'bold'}}/>
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+              type="monotone"
+              dataKey="Warehouse_Temperature"
+              stroke="#FE6B8B"
+              activeDot={{ r: 8 }}
+              strokeWidth={2.5}
+              />
+              <Line type="monotone" dataKey="Evaporator_Temperature" stroke="#FF8E53" strokeWidth={2.5}/>
+          </LineChart>
+      </ResponsiveContainer>
   )
 }
 

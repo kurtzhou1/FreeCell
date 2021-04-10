@@ -2,13 +2,12 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
 }
-html, body{
+
+.alert.alert-secondary,html, body{
     width: 100%;
     height: 100%;
-    .login{
+    .login_module{
         width: 100%;
         height: 100%;
         background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
@@ -18,14 +17,65 @@ html, body{
     }
 }
 
-.login_block{
-    width: 30em;
-    height: 20em;
-    background-color: #fff;
-    .button{
-        background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
-        color: #fff;
-        width: 5em;
-        height: 5em;
+.login{
+    width: 30rem;
+    height: 15rem;
+    background:rgba(255,255,255,0.3);
+    border-radius: 25px;
+    padding: 2rem;
+    .loginForm{
+        width: 100%;
+        height: 100%;
+        .container{
+            font-size: 16px;
+            font-family: Verdana,Arial,\\5FAE\8EDF\6B63\9ED1\9AD4,Microsoft JhengHei,\\5FAE\8EDF\96C5\9ED1\9AD4,Microsoft YaHei;
+            &.input{
+            height: 75%;
+            margin-bottom: 1rem ;
+                >div{
+                    height: 50%;
+                    >div{
+                        height: 25px;
+                    }
+                    >input{
+                        border-radius: 3px;
+                        height: 35px;
+                        padding: 5px;
+                        width: 100%;
+                    }
+                }
+            }
+            &.button{
+                display: flex;
+                height: auto;
+                width: 100%;
+                justify-content: center;
+                >div{
+                    height: 30px;
+                    width: 60px;
+                    border-radius: 3px;
+                    padding: 5px;
+                    margin: 0 5px;
+                    background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
+                    color: #fff;
+                    border: solid 1px #fff;
+                    box-shadow: 0px 0px 0px 2px #94d7e6;
+                    cursor:pointer;
+                    &:hover{
+                        background: linear-gradient(45deg, #21CBF3  30%, #2196F3 90%);
+                    }
+                }
+            }
+        }
     }
+    // .button{
+    //     font-family: Verdana,Arial,\\5FAE\8EDF\6B63\9ED1\9AD4,Microsoft JhengHei,\\5FAE\8EDF\96C5\9ED1\9AD4,Microsoft YaHei;
+    //     
+    //     color: #fff;
+    //     width: 5rem;
+    //     height: 5rem;
+    // }
 }
+
+
+// font-family: Verdana,Arial,\\5FAE\8EDF\6B63\9ED1\9AD4,Microsoft JhengHei,\\5FAE\8EDF\96C5\9ED1\9AD4,Microsoft YaHei;
