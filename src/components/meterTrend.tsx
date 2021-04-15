@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import {dataArray} from '../libs//common'
 
 const MeterTrend:React.FC<any> = (props) => {
-  console.log('props=>>',props)
+
   const dataKey = Object.keys(props.data);
   const [dataArray, setDataArray] = useState<dataArray[]>([]);
 
@@ -12,6 +12,7 @@ const MeterTrend:React.FC<any> = (props) => {
     if(dataKey.length !== 0){
       let nine = props.data.parameters['9'].value; //庫內溫度
       let ten = props.data.parameters['10'].value; //蒸發器溫度
+      console.log(nine,ten)
       let timestamp = props.data.timestamp;
       let timestampDate = dayjs(timestamp).format('YYYY-MM-DD');
       let timestampMin = dayjs(timestamp).format('HH:mm:ss');
@@ -27,7 +28,7 @@ const MeterTrend:React.FC<any> = (props) => {
       }
     }
   },[props.data])
-  
+  console.log('dataArray=>>',dataArray)
   return(
       <ResponsiveContainer width="100%" height="75%">
           <LineChart
