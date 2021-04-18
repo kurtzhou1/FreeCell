@@ -50,12 +50,12 @@ const MachineInfo:React.FC<any> = (props) => {
                 <Table>
                     <TableHead>
                         <TableRow  className={classes.root}>
-                            {objKey ? objKey.map((i:any)=><TableCell className={classes.themeCell} key={i}>{i}</TableCell>):''}
+                            {objKey ? objKey.map((i:string)=><TableCell className={classes.themeCell} key={i}>{i}</TableCell>):''}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow className={classes.content}>
-                            {objValue ? objValue.map((i:any)=><TableCell className={classes.contentCell} key={i}>{typeof(i) == "boolean" ? i ? 'Y':'N': i}</TableCell>):''}
+                            {objValue ? objValue.map((i:string)=><TableCell className={classes.contentCell} key={i}>{typeof(i) == "boolean" ? i ? 'Y':'N': i}</TableCell>):''}
                         </TableRow>
                     </TableBody>
                 </Table>

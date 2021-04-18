@@ -20,6 +20,7 @@
     }
 }
 
+// 登入畫面
 .login{
     width: 30rem;
     height: 15rem;
@@ -73,12 +74,29 @@
     }
 }
 
+//登入後畫面
 .content{
     display: none;
     &.isLogin{
         display: block;
         width: 100%;
         height: 100%;
+        >ul {
+            display: flex;
+            li {
+                padding: 1em;
+                a {
+                    text-decoration:none;
+                    font-size: 18px;
+                }
+                &::marker{
+                    content: none;
+                }
+            }
+        }
+        >.contentContain{
+            padding: 0 2.5em;
+        }
     }
 }
 

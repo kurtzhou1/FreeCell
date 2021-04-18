@@ -9,3 +9,11 @@ export interface dataArray{
     Warehouse_Temperature: number,
     Evaporator_Temperature: number,
 }
+
+export interface isLogin{
+    isLogin: boolean
+}
+
+export interface MachineInfo {
+    
+}

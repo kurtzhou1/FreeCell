@@ -28,7 +28,7 @@ const MeterTrend:React.FC<any> = (props) => {
       }
     }
   },[props.data])
-  console.log('dataArray=>>',dataArray)
+  
   return(
       <ResponsiveContainer width="100%" height="75%">
           <LineChart
