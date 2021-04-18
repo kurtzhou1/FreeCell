@@ -17,9 +17,6 @@ const App = () => {
         return Promise.reject(error)
     })
 
-    const string = "10.50";
-    const number = parseFloat(string);
-
     const getSession = (username:string,password:string) => {
         axios({
             method: 'post',
