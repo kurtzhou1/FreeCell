@@ -17,7 +17,8 @@ const App = () => {
         return Promise.reject(error)
     })
 
-    const getSession = (username:string,password:string) => {
+    const getSession = () => {
+        //axios方式
         axios({
             method: 'post',
             url:'https://venus.comismart.com/auth/rest/token',
@@ -95,7 +96,7 @@ const App = () => {
                             </div>
                         </div>
                         <div className="container button">
-                            <div onClick={()=>getSession(username,password)}>Login</div>
+                            <div onClick={()=>getSession()}>Login</div>
                         </div>
                     </div>
                 </div>

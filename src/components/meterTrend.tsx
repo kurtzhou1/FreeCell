@@ -7,6 +7,7 @@ const MeterTrend:React.FC<any> = (props) => {
 
   const dataKey = Object.keys(props.data);
   const [dataArray, setDataArray] = useState<dataArray[]>([]);
+  const [test,settest] = useState<any[]>([]);
 
   useEffect(()=>{
     if(dataKey.length !== 0){
@@ -17,7 +18,7 @@ const MeterTrend:React.FC<any> = (props) => {
       let timestampDate = dayjs(timestamp).format('YYYY-MM-DD');
       let timestampMin = dayjs(timestamp).format('HH:mm:ss');
       let tmpArr = {title:`${timestampDate} ${timestampMin}`,Warehouse_Temperature:nine,Evaporator_Temperature:ten};
-    
+      settest([...test,nine]) 
       //2021-03-17T07:48:18.656
       if(dataArray.length <= 19){
         setDataArray([...dataArray,tmpArr ]);
@@ -28,7 +29,7 @@ const MeterTrend:React.FC<any> = (props) => {
       }
     }
   },[props.data])
-  
+  console.log('test=>>',test)
   return(
       <ResponsiveContainer width="100%" height="75%">
           <LineChart
