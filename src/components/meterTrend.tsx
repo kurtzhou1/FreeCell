@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import dayjs from 'dayjs'
-import {dataArray} from '../libs//common'
+import dayjs from 'dayjs';
+import {dataArray} from '../libs//common';
+import { Link } from 'react-router-dom';
 
 const MeterTrend:React.FC<any> = (props) => {
 
@@ -29,33 +30,41 @@ const MeterTrend:React.FC<any> = (props) => {
       }
     }
   },[props.data])
-  console.log('test=>>',test)
+  
   return(
-      <ResponsiveContainer width="100%" height="75%">
-          <LineChart
-              data={dataArray}
-              margin={{
-              top: 30,
-              right: 20,
-              left: 20,
-              bottom: 50
-              }}
-          >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="title" angle={10} tick={{fontSize: 12, fontWeight:'bold'}}/>
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-              type="monotone"
-              dataKey="Warehouse_Temperature"
-              stroke="#FE6B8B"
-              activeDot={{ r: 8 }}
-              strokeWidth={2.5}
-              />
-              <Line type="monotone" dataKey="Evaporator_Temperature" stroke="#FF8E53" strokeWidth={2.5}/>
-          </LineChart>
-      </ResponsiveContainer>
+      <>
+        <ul>
+          {/*Link組件中的to會改變網址，但不會刷新頁面*/}
+          <li onClick={()=>{props.setIsLogin(false)}}>登出</li>
+          <li><Link to="/">設備資料</Link></li>
+          <li><Link to="/MeterTrend">溫度計資料</Link></li>
+        </ul>
+        <ResponsiveContainer width="100%" height="75%">
+            <LineChart
+                data={dataArray}
+                margin={{
+                top: 30,
+                right: 20,
+                left: 20,
+                bottom: 50
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="title" angle={10} tick={{fontSize: 12, fontWeight:'bold'}}/>
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                type="monotone"
+                dataKey="Warehouse_Temperature"
+                stroke="#FE6B8B"
+                activeDot={{ r: 8 }}
+                strokeWidth={2.5}
+                />
+                <Line type="monotone" dataKey="Evaporator_Temperature" stroke="#FF8E53" strokeWidth={2.5}/>
+            </LineChart>
+        </ResponsiveContainer>
+      </>
   )
 }
 

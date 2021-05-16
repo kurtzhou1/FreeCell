@@ -1,14 +1,19 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Login from './Login';
 import '../scss/login.scss';
 import {localStorageService} from './storage/storeLocalStorage';
 import axios from 'axios';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import NotFoundPage from "../libs/notFoundPage";
+import MachineInfo from './machineInfo';
+import MeterTrend from './meterTrend';
 
 const App = () => {
-    const calssName = 'login_module';
-    const [ username, setUsername ] = useState('');
-    const [ password, setPassword ] = useState('');
-    const [ isLogin,setIsLogin ] = useState(false);
+
+    const [ isLogin,setIsLogin ] = useState(localStorage.getItem('accessToken') ? true : false);
+    const [ objKey,setObjKey] = useState<string[]>([]);   //設備基本資料Key
+    const [ objValue,setObjValue ] = useState<any[]>([]); //設備基本資料Value
+    const [ data,setData ] = useState([]);                //溫度計資料
 
     // 全局設定 AJAX Request 攔截器 (interceptor)
     axios.interceptors.request.use(async function (config) {
@@ -17,7 +22,7 @@ const App = () => {
         return Promise.reject(error)
     })
 
-    const getSession = () => {
+    const getSession = (username:string,password:string):void => {
         //axios方式
         axios({
             method: 'post',
@@ -80,28 +85,88 @@ const App = () => {
         // )
     }
 
+    const mySocket = new WebSocket("wss://venus.comismart.com/api/websocket");
+    const info1 = {
+        action: "authenticate",
+        token: localStorage.getItem('accessToken')
+    }
+    const info2 = {
+        action: "notification/subscribe",
+        deviceId: "1557544144141",
+        names: ["measurements"]
+    }
+
+    //獲取溫度計資料
+    const getMeterData = () => {
+        if(data.length === 0){
+            mySocket.onopen = function() {
+            mySocket.send(JSON.stringify(info1));
+            mySocket.send(JSON.stringify(info2));
+            };
+            mySocket.onmessage = function(e) {
+            if(JSON.parse(e.data).action.includes('insert')){
+                // mySocket.close(); //關閉webSocket
+                const tmpData = JSON.parse(e.data);
+                setData(tmpData.notification);
+            }
+            }
+        }
+    }
+
+    const route = (
+        <Switch>
+            {!isLogin ? 
+                <Route exact path="/" component={()=><Login isLogin={isLogin} getSession={getSession}/>} /> :
+                <>
+                    <Route exact path="/" component={()=><MachineInfo objKey={objKey} objValue={objValue} setIsLogin={setIsLogin}/>} />
+                    <Route exact path="/MeterTrend" component={()=><MeterTrend data={data} setIsLogin={setIsLogin}/>} />
+                </>
+            }
+            <Route component={NotFoundPage} />
+        </Switch>
+    );
+
+    const headers = {
+        "Accept":"application/json",
+        "Authorization":`Bearer ${localStorage.getItem('accessToken')}`,
+        "tenant":localStorage.getItem('tenant')
+    }
+
+    // 獲取設備基本資料
+    const getData = () => {
+        axios({
+            method: 'get',
+            url:'https://venus.comismart.com/api/rest/device/1557544144141',
+            headers: headers
+        }).then(response => {
+            // setOutputVo(response.data);
+            const dataKey = Object.keys(response.data)
+            dataKey.splice(dataKey.indexOf('data'),1)
+            setObjKey(dataKey)
+            const dataValue = Object.values(response.data)
+            dataValue.splice(dataValue.indexOf(response.data.data),1)
+            setObjValue(dataValue)
+            console.log(`成功:${response.data}`)
+        }).catch(err => {
+            console.log(`失敗:${err}`);
+            }
+        )
+    }
+
+    useEffect(()=>{
+        if(isLogin){
+        getData();
+        getMeterData();
+        }    
+    },[isLogin])
+
     return (
         <>
-            <div className={`${calssName} ${isLogin ? 'isLogin':''}`}>
-                <div className="login">
-                    <div className="loginForm">
-                        <div className="container input">
-                            <div>
-                                <div>Username</div>
-                                <input type="text" onChange={e=>setUsername(e.target.value)} placeholder="Enter Username" name="uname" required />
-                            </div>
-                            <div>
-                                <div>Password</div>
-                                <input type="password" onChange={e=>setPassword(e.target.value)} placeholder="Enter Password" name="psw" required />
-                            </div>
-                        </div>
-                        <div className="container button">
-                            <div onClick={()=>getSession()}>Login</div>
-                        </div>
-                    </div>
+            <BrowserRouter>
+                <div className="contentContain">
+                        {route}
                 </div>
-            </div>
-            <Login isLogin={isLogin}/>
+            </BrowserRouter>
         </>
     )
 }

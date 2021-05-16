@@ -8,9 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import MeterTrend from './meterTrend';
+import { Link } from 'react-router-dom';
 // import MachineInfo from './';
 
 const MachineInfo:React.FC<any> = (props) => {
+ 
     const objKey = props.objKey;
     const objValue = props.objValue;
     const useStyles = makeStyles({
@@ -42,10 +44,15 @@ const MachineInfo:React.FC<any> = (props) => {
         }
     });
     const classes = useStyles();
-   
     
     return(
         <>
+            <ul>
+                {/*Link組件中的to會改變網址，但不會刷新頁面*/}
+                <li onClick={()=>{props.setIsLogin(false)}}>登出</li>
+                <li><Link to="/">設備資料</Link></li>
+                <li><Link to="/MeterTrend">溫度計資料</Link></li>
+            </ul>
             <TableContainer>
                 <Table>
                     <TableHead>

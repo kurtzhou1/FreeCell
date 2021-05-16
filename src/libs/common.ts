@@ -11,7 +11,8 @@ export interface dataArray{
 }
 
 export interface isLogin{
-    isLogin: boolean
+    isLogin: boolean,
+    getSession: any,
 }
 
 export interface MachineInfo {
