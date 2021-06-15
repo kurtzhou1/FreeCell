@@ -5,6 +5,7 @@ import {localStorageService} from './storage/storeLocalStorage';
 import axios from 'axios';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import NotFoundPage from "../libs/notFoundPage";
+import HomePage from './HomePage';
 import MachineInfo from './machineInfo';
 import MeterTrend from './meterTrend';
 
@@ -13,7 +14,6 @@ const App = () => {
     const [ isLogin,setIsLogin ] = useState(localStorage.getItem('accessToken') ? true : false);
     const [ objKey,setObjKey] = useState<string[]>([]);   //設備基本資料Key
     const [ objValue,setObjValue ] = useState<any[]>([]); //設備基本資料Value
-    const [ data,setData ] = useState([]);                //溫度計資料
 
     // 全局設定 AJAX Request 攔截器 (interceptor)
     axios.interceptors.request.use(async function (config) {
@@ -85,43 +85,11 @@ const App = () => {
         // )
     }
 
-    const mySocket = new WebSocket("wss://venus.comismart.com/api/websocket");
-    const info1 = {
-        action: "authenticate",
-        token: localStorage.getItem('accessToken')
-    }
-    const info2 = {
-        action: "notification/subscribe",
-        deviceId: "1557544144141",
-        names: ["measurements"]
-    }
-
-    //獲取溫度計資料
-    const getMeterData = () => {
-        if(data.length === 0){
-            mySocket.onopen = function() {
-            mySocket.send(JSON.stringify(info1));
-            mySocket.send(JSON.stringify(info2));
-            };
-            mySocket.onmessage = function(e) {
-            if(JSON.parse(e.data).action.includes('insert')){
-                // mySocket.close(); //關閉webSocket
-                const tmpData = JSON.parse(e.data);
-                setData(tmpData.notification);
-            }
-            }
-        }
-    }
-
     const route = (
         <Switch>
-            {!isLogin ? 
-                <Route exact path="/" component={()=><Login isLogin={isLogin} getSession={getSession}/>} /> :
-                <>
-                    <Route exact path="/" component={()=><MachineInfo objKey={objKey} objValue={objValue} setIsLogin={setIsLogin}/>} />
-                    <Route exact path="/MeterTrend" component={()=><MeterTrend data={data} setIsLogin={setIsLogin}/>} />
-                </>
-            }
+            <Route exact path="/" component={()=><HomePage />} />
+            <Route exact path="/MachineInfo" component={()=><MachineInfo objKey={objKey} objValue={objValue} />} />
+            <Route exact path="/MeterTrend" component={()=><MeterTrend />} />
             <Route component={NotFoundPage} />
         </Switch>
     );
@@ -153,10 +121,17 @@ const App = () => {
         )
     }
 
+    // 登出
+    const logOut = () => {
+        setIsLogin(false);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('tenant');
+    }
+
     useEffect(()=>{
         if(isLogin){
         getData();
-        getMeterData();
         }    
     },[isLogin])
 
@@ -164,9 +139,16 @@ const App = () => {
         <>
             <BrowserRouter>
                 <div className="contentContain">
+                    <ul>
+                        {/*Link組件中的to會改變網址，但不會刷新頁面*/}
+                        <li onClick={logOut}>登出</li>
+                        <li><Link to="/MachineInfo">設備資料</Link></li>
+                        <li><Link to="/MeterTrend">溫度計資料</Link></li>
+                    </ul>
                         {route}
                 </div>
             </BrowserRouter>
+            <Login isLogin={isLogin} getSession={getSession}/>
         </>
     )
 }
