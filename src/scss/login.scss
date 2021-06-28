@@ -66,19 +66,18 @@
                 height: auto;
                 width: 100%;
                 justify-content: center;
-                >div{
+                >button{
                     height: 30px;
                     width: 60px;
                     border-radius: 3px;
                     padding: 5px;
                     margin: 0 5px;
-                    background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
-                    color: #fff;
-                    border: solid 1px #fff;
-                    box-shadow: 0px 0px 0px 2px #94d7e6;
+                    background: #fff;
+                    border: solid 3px #2196F3;
+                    box-shadow: 0px 0px 0px 3px #94d7e6;
                     cursor:pointer;
                     &:hover{
-                        background: linear-gradient(45deg, #21CBF3  30%, #2196F3 90%);
+                        border: solid 3px #21CBF3;
                     }
                 }
             }

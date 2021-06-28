@@ -8,6 +8,7 @@ import NotFoundPage from "../libs/notFoundPage";
 import HomePage from './HomePage';
 import MachineInfo from './machineInfo';
 import MeterTrend from './meterTrend';
+import { PrivateRoute } from './PrivateRoute';
 
 const App = () => {
 
@@ -87,10 +88,11 @@ const App = () => {
 
     const route = (
         <Switch>
-            <Route exact path="/" component={()=><HomePage />} />
-            <Route exact path="/MachineInfo" component={()=><MachineInfo objKey={objKey} objValue={objValue} />} />
-            <Route exact path="/MeterTrend" component={()=><MeterTrend />} />
-            <Route component={NotFoundPage} />
+            <Route path="/Login" component={()=><Login isLogin={isLogin} getSession={getSession} setIsLogin={setIsLogin}/>} />
+            <PrivateRoute exact path="/" component={()=><HomePage />} />
+            <PrivateRoute path="/MachineInfo" component={()=><MachineInfo objKey={objKey} objValue={objValue} />} />
+            <PrivateRoute path="/MeterTrend" component={()=><MeterTrend />} />
+            <PrivateRoute component={NotFoundPage} />
         </Switch>
     );
 
@@ -141,14 +143,15 @@ const App = () => {
                 <div className="contentContain">
                     <ul>
                         {/*Link組件中的to會改變網址，但不會刷新頁面*/}
-                        <li onClick={logOut}>登出</li>
+                        <li onClick={logOut}><Link to="/Login">登出</Link></li>
+                        <li><Link to="/">首頁</Link></li>
                         <li><Link to="/MachineInfo">設備資料</Link></li>
                         <li><Link to="/MeterTrend">溫度計資料</Link></li>
                     </ul>
                         {route}
                 </div>
             </BrowserRouter>
-            <Login isLogin={isLogin} getSession={getSession}/>
+            {/* <Login isLogin={isLogin} getSession={getSession}/> */}
         </>
     )
 }
